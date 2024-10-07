@@ -11,6 +11,8 @@ def main():
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
 
+    score = 0
+
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
     asteroids = pygame.sprite.Group()
@@ -27,6 +29,8 @@ def main():
 
     dt = 0
     
+    print("Starting Asteroids!")
+
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -37,13 +41,20 @@ def main():
 
         for asteroid in asteroids:
             if asteroid.collides_with(player):
+                shots_count = player.get_shots_count()
+                hit_percentage = round(((score / shots_count) * 100), 0)
                 print("Game over!")
+                print(f"Score: {score}")
+                print(f"Shots fired: {shots_count}")
+                print(f"Accuracy: {hit_percentage}%")
+                print
                 sys.exit()
 
             for shot in shots:
                     if asteroid.collides_with(shot):
                         shot.kill()
                         asteroid.split()
+                        score += 1
 
         pygame.Surface.fill(screen, "black")
 
